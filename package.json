@@ -1,6 +1,6 @@
 {
   "name": "@xiaohuangbo/dsh-conversation-lock",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": false,
   "description": "Model-controlled conversation restrictions for DeepSeek Harness: close conversations with a yellow notice, disable feedback/stop/copy controls, and pause Session Log uploads — all behind user-authorized toggles",
   "keywords": [

@@ -47,23 +47,15 @@ The plugin also adds **Settings → Conversation restrictions**, with five user-
 
 ### Installation
 
-Install from npm:
+Install the package directly into the current DSH profile from npmjs:
 
 ```sh
-npm install -g @xiaohuangbo/dsh-conversation-lock
+dsh plugin add @xiaohuangbo/dsh-conversation-lock@1.1.2
 ```
 
-Or install the package into the current DSH profile with the plugin manager:
+To install from GitHub Packages instead, configure the registry and token in `~/.npmrc` as described under [Publishing](#publishing), then run the same `dsh plugin add` command. If your npm config maps the `@xiaohuangbo` scope to GitHub Packages, the install will use GitHub; otherwise it uses npmjs.
 
-```json
-{"action":"install_bundle","target":"@xiaohuangbo/dsh-conversation-lock@1.1.1"}
-```
-
-For local development, install the project directory instead:
-
-```json
-{"action":"install_bundle","target":"/path/to/dsh-conversation-lock"}
-```
+For local development, install the project directory from the DSH Plugin Manager with `install_bundle`, using the package directory as the target.
 
 No build step or install scripts are required. `zod` is the only runtime dependency; `@deepseek-ai/schemastery` is provided by DSH as a peer dependency.
 
@@ -136,14 +128,14 @@ npm run publish:gh     # GitHub Packages (npm.pkg.github.com)
 npm run publish:both   # publish to both registries in sequence
 ```
 
-`publishConfig` defaults to npmjs with public access, so `npm publish` works as well. For GitHub Packages, configure `~/.npmrc`:
+First authenticate to npmjs with `npm login`. `publishConfig` defaults to npmjs and the package is public, so `npm publish` works as well. For GitHub Packages, create a **classic** GitHub token with `write:packages` (and `read:packages` to install), then configure `~/.npmrc`:
 
 ```ini
 @xiaohuangbo:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 ```
 
-GitHub Packages visibility follows the linked repository. This repository is public. Keep `package.json`, `host.js`'s `?generation=` tag, and `HOST_BUILD` aligned when releasing a new runtime version.
+Export `GITHUB_TOKEN` in the shell before running `npm run publish:gh` or `npm run publish:both`. GitHub Packages visibility is controlled in the package's **Package settings → Change visibility**; make it public after the first publish if GitHub created it as private. The linked repository is public. Keep `package.json`, `host.js`'s `?generation=` tag, and `HOST_BUILD` aligned when releasing new runtime code.
 
 ### License
 
@@ -167,23 +159,15 @@ MIT. The yellow conversation-lock icon is original artwork. The response-feedbac
 
 ### 安装
 
-从 npm 安装：
+从 npmjs 安装到当前 DSH profile：
 
 ```sh
-npm install -g @xiaohuangbo/dsh-conversation-lock
+dsh plugin add @xiaohuangbo/dsh-conversation-lock@1.1.2
 ```
 
-或用 DSH 插件管理器安装：
+如要从 GitHub Packages 安装，先按[发布章节](#发布)配置 `~/.npmrc` 的 registry 与 token，然后运行同一条 `dsh plugin add`。若 `~/.npmrc` 将 `@xiaohuangbo` scope 指向 GitHub Packages，就会从 GitHub 拉取；否则默认从 npmjs 安装。
 
-```json
-{"action":"install_bundle","target":"@xiaohuangbo/dsh-conversation-lock@1.1.1"}
-```
-
-本地开发时也可直接安装项目目录：
-
-```json
-{"action":"install_bundle","target":"/path/to/dsh-conversation-lock"}
-```
+本地开发时，可在 DSH Plugin Manager 中用 `install_bundle` 安装项目目录，并将项目目录作为 target。
 
 无需构建或安装脚本。运行期依赖只有 `zod`；`@deepseek-ai/schemastery` 由 DSH 提供并作为 peer dependency。
 
@@ -256,14 +240,14 @@ npm run publish:gh     # 发布到 GitHub Packages
 npm run publish:both   # 依次发布到两个 registry
 ```
 
-`publishConfig` 默认指向 npmjs 并设置 public access，也可以直接运行 `npm publish`。发布到 GitHub Packages 前，请配置 `~/.npmrc`：
+先用 `npm login` 登录 npmjs。`publishConfig` 默认指向 npmjs 且包为 public，因此也可直接运行 `npm publish`。发布到 GitHub Packages 时，需要一个带 `write:packages` 权限的 **classic** GitHub token（安装包还需 `read:packages`），并配置 `~/.npmrc`：
 
 ```ini
 @xiaohuangbo:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 ```
 
-GitHub Packages 的可见性跟随关联仓库；本仓库为 public。发布新运行时代码时，需保持 `package.json`、`host.js` 的 `?generation=` 与 `HOST_BUILD` 版本一致。
+运行 `npm run publish:gh` 或 `npm run publish:both` 前，请在 shell 中设置 `GITHUB_TOKEN`。GitHub Packages 的公开状态需要在包页面的 **Package settings → Change visibility** 确认，首次发布后若默认为 private，请手动改为 public。本项目的关联仓库已是 public。发布新运行时代码时，需保持 `package.json`、`host.js` 的 `?generation=` 与 `HOST_BUILD` 版本一致。
 
 ### 许可
 
