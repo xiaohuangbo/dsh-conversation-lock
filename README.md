@@ -101,12 +101,14 @@ npm run publish:gh     # 发布到 GitHub Packages（npm.pkg.github.com）
 npm run publish:both   # 依次发布到两处
 ```
 
-`publishConfig` 默认指向 npmjs 且 `access: public`，所以直接 `npm publish` 也可以。GitHub Packages 需要先配置 `~/.npmrc`：
+`publishConfig` 默认指向 npmjs 且 `access: public`、包本身 `private: false`，所以直接 `npm publish` 也可以。GitHub Packages 需要先配置 `~/.npmrc`：
 
 ```ini
 @xiaohuangbo:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 ```
+
+GitHub Packages 中 npm 包的可见性**继承仓库**：本仓库是 public，所以 `publish:gh` 发布的包也是 public（命令里的 `--access public` 只是保险，GitHub 以仓库可见性为准）。若仓库是 private，包会变成 private，需要先在 GitHub 仓库设置里改为 public 再发布。
 
 版本号在 `package.json`、`host.js` 的 `?generation=` 与 `HOST_BUILD` 三处保持一致。
 
