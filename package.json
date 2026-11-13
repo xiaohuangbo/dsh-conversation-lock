@@ -2,11 +2,80 @@
   "name": "@xiaohuangbo/dsh-conversation-lock",
   "version": "1.1.0",
   "description": "Model-controlled conversation restrictions for DeepSeek Harness: close conversations with a yellow notice, disable feedback/stop/copy controls, and pause Session Log uploads — all behind user-authorized toggles",
-  "type": "module",
+  "keywords": [
+    "dsh",
+    "deepseek",
+    "harness",
+    "deepseek-harness",
+    "dsh-plugin",
+    "conversation",
+    "restrictions"
+  ],
+  "homepage": "https://github.com/xiaohuangbo/dsh-conversation-lock",
+  "bugs": {
+    "url": "https://github.com/xiaohuangbo/dsh-conversation-lock/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaohuangbo/dsh-conversation-lock.git"
+  },
+  "author": "xiaohuangbo",
   "license": "MIT",
-  "exports": { ".": "./host.js", "./client": "./client.js", "./locale/*.json": "./locale/*.json", "./icon": "./icon.svg" },
-  "files": ["host.js", "index.js", "policy.js", "client.js", "cordis.patch.yml", "locale/*.json", "icon.svg", "README.md", "THIRD_PARTY_NOTICES", "LICENSE"],
-  "scripts": { "test": "node --test test/*.test.js", "check": "node --check host.js && node --check index.js && node --check client.js && node --check policy.js" },
-  "dependencies": { "@deepseek-ai/schemastery": "~3.19.0", "zod": "^4.4.3" },
-  "dsh": { "bundle": { "patch": "./cordis.patch.yml" }, "client": { "platform": "web", "immediately": true, "inject": ["@deepseek-ai/dsh-client-ui-conversation", "@deepseek-ai/dsh-client-ui-message-feedback", "@deepseek-ai/dsh-client-ui-settings-session-log"] } }
+  "type": "module",
+  "main": "./host.js",
+  "exports": {
+    ".": "./host.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "files": [
+    "host.js",
+    "index.js",
+    "policy.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "THIRD_PARTY_NOTICES",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "check": "node --check host.js && node --check index.js && node --check client.js && node --check policy.js",
+    "publish:npm": "npm publish --registry=https://registry.npmjs.org --access public",
+    "publish:gh": "npm publish --registry=https://npm.pkg.github.com --access public",
+    "publish:both": "npm run publish:npm && npm run publish:gh"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/schemastery": "^3.19.0"
+  },
+  "devDependencies": {
+    "@deepseek-ai/schemastery": "~3.19.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-message-feedback",
+        "@deepseek-ai/dsh-client-ui-settings-session-log"
+      ]
+    }
+  }
 }

@@ -22,7 +22,19 @@
 {"action":"install_bundle","target":"/path/to/dsh-conversation-lock"}
 ```
 
-无需构建、无安装脚本；Host 与 Client 均为普通 JavaScript。依赖只有配置与存储校验用的 `@deepseek-ai/schemastery` 和 `zod`。
+### 从 npm 安装
+
+```sh
+npm i -g @xiaohuangbo/dsh-conversation-lock
+```
+
+或在 DSH 中用 `plugin_manager` 安装 npm 上的包：
+
+```json
+{"action":"install_bundle","target":"@xiaohuangbo/dsh-conversation-lock@1.1.0"}
+```
+
+无需构建、无安装脚本；Host 与 Client 均为普通 JavaScript。运行期依赖只有 `zod`；`@deepseek-ai/schemastery` 作为 peer 由 DSH 提供。
 
 > 修改 `index.js` 后需要重启 DSH。插件开关的 disable/enable 只重建前端，Node 会继续复用已求值的 Host 模块；`host.js` 的 `?generation=` 也只在首次求值时生效。
 
@@ -75,10 +87,28 @@
 ## 开发
 
 ```sh
+npm install
 npm test          # 13 项策略与后端集成测试
 npm run check     # 四个运行文件的语法检查
 npm pack --dry-run
 ```
+
+## 发布
+
+```sh
+npm run publish:npm    # 发布到 registry.npmjs.org
+npm run publish:gh     # 发布到 GitHub Packages（npm.pkg.github.com）
+npm run publish:both   # 依次发布到两处
+```
+
+`publishConfig` 默认指向 npmjs 且 `access: public`，所以直接 `npm publish` 也可以。GitHub Packages 需要先配置 `~/.npmrc`：
+
+```ini
+@xiaohuangbo:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+版本号在 `package.json`、`host.js` 的 `?generation=` 与 `HOST_BUILD` 三处保持一致。
 
 测试覆盖关闭到期边界、时区校验、授权隔离、单独反馈限制、禁用评价拒绝写入、`/feedback` 共用策略、隐私排除与遥测/上传恢复、配置写入失败回滚、跨会话隔离。
 
