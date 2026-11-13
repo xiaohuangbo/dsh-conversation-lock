@@ -50,13 +50,13 @@ The plugin also adds **Settings → Conversation restrictions**, with five user-
 Install the package directly into the current DSH profile from npmjs:
 
 ```sh
-env 'npm_config_@xiaohuangbo:registry=https://registry.npmjs.org' dsh plugin add @xiaohuangbo/dsh-conversation-lock@1.1.3
+env 'npm_config_@xiaohuangbo:registry=https://registry.npmjs.org' dsh plugin add @xiaohuangbo/dsh-conversation-lock@1.1.4
 ```
 
 To install from GitHub Packages instead, configure the registry and token in `~/.npmrc` as described under [Publishing](#publishing), then run:
 
 ```sh
-dsh plugin add @xiaohuangbo/dsh-conversation-lock@1.1.3
+dsh plugin add @xiaohuangbo/dsh-conversation-lock@1.1.4
 ```
 
 The explicit environment override matters if `~/.npmrc` maps the `@xiaohuangbo` scope to GitHub Packages; without it npm/pnpm follows that scope mapping even when a general npmjs registry is specified.
@@ -168,13 +168,13 @@ MIT. The yellow conversation-lock icon is original artwork. The response-feedbac
 从 npmjs 安装到当前 DSH profile：
 
 ```sh
-env 'npm_config_@xiaohuangbo:registry=https://registry.npmjs.org' dsh plugin add @xiaohuangbo/dsh-conversation-lock@1.1.3
+env 'npm_config_@xiaohuangbo:registry=https://registry.npmjs.org' dsh plugin add @xiaohuangbo/dsh-conversation-lock@1.1.4
 ```
 
 如要从 GitHub Packages 安装，先按[发布章节](#发布)配置 `~/.npmrc` 的 registry 与 token，然后运行：
 
 ```sh
-dsh plugin add @xiaohuangbo/dsh-conversation-lock@1.1.3
+dsh plugin add @xiaohuangbo/dsh-conversation-lock@1.1.4
 ```
 
 若 `~/.npmrc` 将 `@xiaohuangbo` scope 指向 GitHub Packages，npm/pnpm 会优先使用该 scope registry，即使普通 registry 指向 npmjs；因此从 npmjs 安装时使用上面的显式环境变量覆盖。
