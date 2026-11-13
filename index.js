@@ -3,7 +3,7 @@ import { z as Z } from 'zod';
 import { FEATURES, EMPTY_POLICY, effective, changePolicy } from './policy.js';
 
 export const name = 'conversation-lock';
-export const HOST_BUILD = '1.1.0';
+export const HOST_BUILD = '1.1.1';
 export const inject = ['tools', 'commands', 'connection', 'webServer', 'storageDomain', 'agents', 'configEditor'];
 export const Config = z.object({
   conversation: z.boolean().default(true).volatile(),

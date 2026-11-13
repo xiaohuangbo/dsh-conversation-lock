@@ -158,7 +158,7 @@ window.__ModuleLoader__.load({
             const root = marker.current?.closest('[data-conversation-content]');
             if (!root) return;
             const altered = new Map();
-            const stopPattern = /^(停止|停止生成|停止输出|Stop|Stop generation|Stop generating)$/i;
+            const stopPattern = /^(停止|停止生成|停止输出|停止思考|停止回答|Stop|Stop generation|Stop generating|Stop thinking|Stop reasoning)$/i;
             const copyPattern = /复制|已复制|copy|copied/i;
             function sync() {
               // One composer button switches between Stop (square glyph) and Send
@@ -174,7 +174,7 @@ window.__ModuleLoader__.load({
                 const shouldBlock = !!(p.stop && isStop || p.copy && isCopy || p.closed && button.closest('[data-composer-card]'));
                 if (!shouldBlock) continue;
                 blockedNow.add(button);
-                if (!altered.has(button)) altered.set(button, { disabled: button.disabled, title: button.getAttribute('title'), cursor: button.style.cursor, opacity: button.style.opacity });
+                if (!altered.has(button)) altered.set(button, { disabled: button.disabled, cursor: button.style.cursor, opacity: button.style.opacity });
                 if (!button.disabled) button.disabled = true;
                 if (button.style.cursor !== 'not-allowed') button.style.cursor = 'not-allowed';
                 if (button.style.opacity !== '0.4') button.style.opacity = '0.4';
@@ -183,11 +183,12 @@ window.__ModuleLoader__.load({
                 if (blockedNow.has(button)) continue;
                 altered.delete(button);
                 if (!button.isConnected) continue;
-                button.disabled = old.disabled;
-                button.style.cursor = old.cursor;
-                button.style.opacity = old.opacity;
-                if (old.title === null) button.removeAttribute('title');
-                else button.setAttribute('title', old.title);
+                // Restore only values still owned by this compatibility layer.
+                // DSH may have changed the shared Stop/Send button while a
+                // restriction was active; never put its stale disabled state back.
+                if (button.disabled) button.disabled = old.disabled;
+                if (button.style.cursor === 'not-allowed') button.style.cursor = old.cursor;
+                if (button.style.opacity === '0.4') button.style.opacity = old.opacity;
               }
             }
             const blocked = event => {
@@ -195,6 +196,12 @@ window.__ModuleLoader__.load({
               if (event.target.closest?.('.dcl-dialog')) return;
               const composer = event.target.closest?.('[data-composer-seat]');
               const transcript = event.target.closest?.('[data-conversation-scroll]');
+              const control = event.target.closest?.('button,[role="button"]');
+              const controlLabel = control?.getAttribute('aria-label') || control?.getAttribute('title') || '';
+              if (p.stop && event.type === 'click' && control && stopPattern.test(controlLabel.trim())) {
+                event.preventDefault(); event.stopImmediatePropagation();
+                return;
+              }
               if (p.copy && transcript && (event.type === 'copy' || event.type === 'cut')) {
                 // Write the refusal notice into the clipboard so the user never
                 // receives stale text that looks like a successful copy.
@@ -208,13 +215,18 @@ window.__ModuleLoader__.load({
                 event.preventDefault(); event.stopImmediatePropagation();
               }
             };
-            ['copy', 'cut', 'dragstart', 'keydown', 'beforeinput'].forEach(type => document.addEventListener(type, blocked, true));
+            ['copy', 'cut', 'dragstart', 'click', 'keydown', 'beforeinput'].forEach(type => document.addEventListener(type, blocked, true));
             const observer = new MutationObserver(sync);
             sync(); observer.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['disabled', 'aria-label'] });
             return () => {
               observer.disconnect();
-              ['copy', 'cut', 'dragstart', 'keydown', 'beforeinput'].forEach(type => document.removeEventListener(type, blocked, true));
-              for (const [button, old] of altered) { button.disabled = old.disabled; button.style.cursor = old.cursor; button.style.opacity = old.opacity; if (old.title === null) button.removeAttribute('title'); else button.setAttribute('title', old.title); }
+              ['copy', 'cut', 'dragstart', 'click', 'keydown', 'beforeinput'].forEach(type => document.removeEventListener(type, blocked, true));
+              for (const [button, old] of altered) {
+                if (!button.isConnected) continue;
+                if (button.disabled) button.disabled = old.disabled;
+                if (button.style.cursor === 'not-allowed') button.style.cursor = old.cursor;
+                if (button.style.opacity === '0.4') button.style.opacity = old.opacity;
+              }
             };
           }, [sessionId, p.stop, p.copy, p.closed]);
           return h('span', { ref: marker, className: 'dcl-marker', 'data-dcl-session': sessionId });

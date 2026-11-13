@@ -31,7 +31,7 @@ npm i -g @xiaohuangbo/dsh-conversation-lock
 或在 DSH 中用 `plugin_manager` 安装 npm 上的包：
 
 ```json
-{"action":"install_bundle","target":"@xiaohuangbo/dsh-conversation-lock@1.1.0"}
+{"action":"install_bundle","target":"@xiaohuangbo/dsh-conversation-lock@1.1.1"}
 ```
 
 无需构建、无安装脚本；Host 与 Client 均为普通 JavaScript。运行期依赖只有 `zod`；`@deepseek-ai/schemastery` 作为 peer 由 DSH 提供。
