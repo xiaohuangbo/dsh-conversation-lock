@@ -1,0 +1,4 @@
+- insert:
+    - id: conversation-lock
+      name: '@xiaohuangbo/dsh-conversation-lock'
+      config: {}
