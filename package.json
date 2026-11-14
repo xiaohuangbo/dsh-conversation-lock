@@ -41,6 +41,8 @@
     "cordis.patch.yml",
     "locale/*.json",
     "icon.svg",
+    "icon-180.png",
+    "screenshots.json",
     "head.png",
     "0261113_143706.png",
     "README.md",
